@@ -12,6 +12,12 @@ class WorkerNotFoundError(PyGridError):
         super().__init__(message)
 
 
+class RoleNotFoundError(PyGridError):
+    def __init__(self):
+        message = "Role ID not found!"
+        super().__init__(message)
+
+
 class CycleNotFoundError(PyGridError):
     def __init__(self):
         message = "Cycle not found!"
