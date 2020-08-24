@@ -34,6 +34,13 @@ class BaseModel(db.Model, AllFeaturesMixin):
 
 # Tables must be created after db has been created
 from .main.users import Role
+from src.app.main.users import User
+
+
+def retrieve_user(**kwargs):
+    query = db.session.query(User)
+    user = query.filter_by(**kwargs).one_or_none()
+    return user
 
 
 def set_database_config(app, test_config=None, verbose=False):
@@ -120,6 +127,55 @@ def seed_db():
     )
     db.session.add(new_role)
 
+#    user_metrics = [
+#        (
+#            "awesome@mail.com",
+#            "D2BC2F8D09990EBE87C809684FD78C66",
+#            "S8S,wHH1+xuz.UYsVRxFn(AI(oO7Mc",
+#            "f0d50d7c11151d2dec4e73014c5bd1166c4423931132d552149f7364264e410f",
+#            1,
+#        ),
+#        (
+#            "gummy@bear.net",
+#            "2B9337C6FA501704AB5D25A337329813",
+#            "cV#E:#)u`%J<^p-PI9u/y%8En::JQI",
+#            "339f63f454f3c7f7a9535ffc9fef0cb3d8f435fb25d7d604425001394d7cc3a7",
+#            2,
+#        ),
+#        (
+#            "tech@gibberish.com",
+#            "BDEB6E8EE39B6C70835993486C9E65DC",
+#            "]GBF[R>GX[9Cmk@DthFT!mhloUc%[f",
+#            "3c777d6e1cece1e78aa9c26ae7fa2ecf33a6d3fb1db7c1313e7b79ef3ee884eb",
+#            3,
+#        ),
+#        (
+#            "mail@mail.mail",
+#            "96B9C62C86F35C209C5B8C302BA34175",
+#            "mnl6=(xUFM]R#bDeL='!(d-$%,4NcZ",
+#            "a32865cc200d1fd09c8e25f965b6699b02fda472da3e66aca2a87cb7996d04ca",
+#            4,
+#        ),
+#        (
+#            "notanemail@mail.com",
+#            "128F2F8D00203EB153C104382FD75C13",
+#            "S21,w12H1dauz.11154xFn7Ad(o17Mc",
+#            "12350d7c11151d2de12373014c512312312312312312312312312364264e410f",
+#            0,
+#        ),
+#    ]
+#
+#    for user_metric in user_metrics:
+#        email, hashed_password, salt, private_key, role = user_metric
+#        new_user = User(
+#            email=email,
+#            hashed_password=hashed_password,
+#            salt=salt,
+#            private_key=private_key,
+#            role=role,
+#        )
+#        db.session.add(new_user)
+
 
 def create_app(node_id: str, debug=False, n_replica=None, test_config=None) -> Flask:
     """Create flask application.
@@ -180,7 +236,7 @@ def create_app(node_id: str, debug=False, n_replica=None, test_config=None) -> F
         seed_db()
 
     db.session.commit()
-
+    #import pdb; pdb.set_trace()
     # Set Authentication configs
     app = auth.set_auth_configs(app)
 
